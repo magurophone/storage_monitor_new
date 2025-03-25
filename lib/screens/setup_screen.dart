@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../utils/preferences.dart';
+import '../services/foreground_task_service.dart';
 import 'home_screen.dart';
 
 class SetupScreen extends StatefulWidget {
@@ -105,6 +106,25 @@ class _SetupScreenState extends State<SetupScreen> {
                       ),
               ),
             ),
+            const SizedBox(height: 24),
+            const Text(
+              '設定が完了すると、アプリはバックグラウンドでデバイスの空き容量を監視します。',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '通知をスワイプしてサービスを停止しないようにしてください。',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              ),
+            ),
           ],
         ),
       ),
@@ -125,6 +145,9 @@ class _SetupScreenState extends State<SetupScreen> {
       
       // セットアップ完了フラグを設定
       await PreferencesUtil.setSetupCompleted(true);
+      
+      // フォアグラウンドサービスを開始
+      await initForegroundTask();
 
       // メイン画面に遷移
       if (mounted) {
